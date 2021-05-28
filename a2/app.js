@@ -5,8 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
-const swaggerUI = require('swagger-ui-express');
-const swaggerDocument = require('./swagger/swagger.json');
+// const swaggerUI = require('swagger-ui-express');
+// const swaggerDocument = require('./swagger/swagger.json');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const options = require('./knexfile.js');
+const options = require('./middleware/knexfile.js');
 const knex = require('knex')(options);
 
 app.use((req, res, next)=>{
@@ -45,7 +45,7 @@ app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/docs', swaggerUI.server, swaggerUI.setup(swaggerDocument))
+// app.use('/docs', swaggerUI.server, swaggerUI.setup(swaggerDocument))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
