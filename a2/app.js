@@ -3,6 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const helmet = require('helmet');
+const cors = require('cors');
+const swaggerUI = require('swagger-ui-express');
+const swaggerDocument = require('./swagger/swagger.json');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -34,8 +38,14 @@ app.use('/knex', function(req, res, next){
   ).catch((err)=> {console.log(err); throw err})
   res.send("Version logged successfully")
 })
+
+app.use(logger('common'));
+app.use(helmet());
+app.use(cors());
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/docs', swaggerUI.server, swaggerUI.setup(swaggerDocument))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
