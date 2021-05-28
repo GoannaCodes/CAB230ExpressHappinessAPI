@@ -1,4 +1,4 @@
-const express = require('express');
+var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
@@ -30,10 +30,20 @@ router.get('/rankings', function(req, res, next){
 })
 
 router.get('/countries', function(req, res, next){
+  if (req.query.year || req.query.country){
+    res.status(400).json({error: true, message: 'Invalid query parameters. Query parameters are not permitted.'})
+  }
 
+  req.db.from('rankings').distinct('country').orderBy('country', 'asc')
+  .then((rows)=>{
+    let countryNames = rows.map(function(row){
+      return row['country']
+    })
+    res.status(200).json(countryNames);
+  })
 })
 
-router.get('/factors', function(req, res, next){
+// router.get('/factors', function(req, res, next){
 
-})
+// })
 module.exports = router;
