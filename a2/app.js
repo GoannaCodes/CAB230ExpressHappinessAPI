@@ -19,6 +19,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const options = require('./knexfile.js');
+const knex = require('knex')(options);
+
+app.use((req, res, next)=>{
+  req.db = knex;
+  next();
+})
+
+app.use('/knex', function(req, res, next){
+  req.db.raw("SELECT VERSION()").then(
+    (version)=>console.log((version[0][0]))
+
+  ).catch((err)=> {console.log(err); throw err})
+  res.send("Version logged successfully")
+})
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
