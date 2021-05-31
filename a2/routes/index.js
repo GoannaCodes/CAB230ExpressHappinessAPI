@@ -10,6 +10,10 @@ router.get('/', function(req, res, next) {
 router.get('/rankings', function(req, res, next){
   let filter = {};
 
+  if ((!req.query.year && !req.query.country) && req.query == {}){
+    res.status(400).json({error: true, message: "Invalid query provided."})
+  }
+
   if (req.query.year){
     filter.year = req.query.year;
   }
@@ -78,6 +82,10 @@ const authorize = (req, res, next) =>{
 router.get('/factors/:year', authorize, function(req, res){
   let filter = {};
   filter.year = req.params.year;
+
+  if ((!req.query.limit && !req.query.country) && req.query == {}){
+    res.status(400).json({error: true, message: "Invalid query provided."})
+  }
 
   if (req.query.limit < 1){
     res.status(400).json({error: true, message: 'Limit cannot be negative.'})
