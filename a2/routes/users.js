@@ -29,10 +29,12 @@ router.post('/register', function(req, res, next){
     }
     const saltRounds = 10;
     const hash = bcrypt.hashSync(password, saltRounds);
-    return req.db.from('users').insert({email, hash})
+    return req.db.from('users').insert({email: email, hash: hash})
   }).then(()=>{
     res.status(201).json({message: "User created"})
   })
+
+
 })
 
 router.post('/login', function(req, res, next){
@@ -69,5 +71,13 @@ router.post('/login', function(req, res, next){
       const token = jwt.sign({email, exp}, secretKey)
       res.status(200).json({token_type: 'Bearer', token, expires_in})
   })
+})
+
+router.put('/user/:email/profile', function(req, res){
+  
+})
+
+router.get('/user/:email/profile', function(req, res){
+  
 })
 module.exports = router;
