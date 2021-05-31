@@ -11,7 +11,7 @@ router.get('/rankings', function(req, res, next){
   let filter = {};
 
   if (req.query.year){
-    filter.year = req.query.year   
+    filter.year = req.query.year;
   }
 
   if (req.query.country){
@@ -23,8 +23,9 @@ router.get('/rankings', function(req, res, next){
     if (rows == ""){
       res.status(400).json({error: true, message: 'Invalid country or year given.'})
     }
-    res.json(rows)
+    res.status(200).json(rows)
   }).catch((err)=>{
+    console.log(err);
     res.json({error: true, message: 'Error retrieving records'})
   })
 
