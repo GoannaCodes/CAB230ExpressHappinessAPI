@@ -1,3 +1,4 @@
+const e = require('express');
 var express = require('express');
 var router = express.Router();
 const jwt = require('jsonwebtoken');
@@ -10,9 +11,18 @@ router.get('/', function(req, res, next) {
 router.get('/rankings', function(req, res, next){
   let filter = {};
 
-  if ((!req.query.year && !req.query.country) && req.query == {}){
-    res.status(400).json({error: true, message: "Invalid query provided."})
+  if (Object.keys(req.query).length === 0){
+    console.log("No queries");
+  } else if (!req.query.year && !req.query.country){
+    res.status(400).json({error: true, message: 'Invalid query parameter provided.'})
   }
+  // // if query is not empty
+  // if (req.query !== {}){
+  //   if (!req.query.year && !req.query.country){
+  //     res.status(400).json({error: true, message: "Invalid query provided."})
+  //   }
+  // }
+
 
   if (req.query.year){
     filter.year = req.query.year;
@@ -83,8 +93,10 @@ router.get('/factors/:year', authorize, function(req, res){
   let filter = {};
   filter.year = req.params.year;
 
-  if ((!req.query.limit && !req.query.country) && req.query == {}){
-    res.status(400).json({error: true, message: "Invalid query provided."})
+  if (Object.keys(req.query).length === 0){
+    console.log("No queries");
+  } else if (!req.query.year && !req.query.country){
+    res.status(400).json({error: true, message: 'Invalid query parameter provided.'})
   }
 
   if (req.query.limit < 1){
