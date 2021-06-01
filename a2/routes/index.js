@@ -16,13 +16,6 @@ router.get('/rankings', function(req, res, next){
   } else if (!req.query.year && !req.query.country){
     res.status(400).json({error: true, message: 'Invalid query parameter provided.'})
   }
-  // // if query is not empty
-  // if (req.query !== {}){
-  //   if (!req.query.year && !req.query.country){
-  //     res.status(400).json({error: true, message: "Invalid query provided."})
-  //   }
-  // }
-
 
   if (req.query.year){
     filter.year = req.query.year;
@@ -46,7 +39,7 @@ router.get('/rankings', function(req, res, next){
 })
 
 router.get('/countries', function(req, res, next){
-  if (req.query.year || req.query.country){
+  if (Object.keys(req.query).length !== 0){
     res.status(400).json({error: true, message: 'Invalid query parameters. Query parameters are not permitted.'})
   }
 
